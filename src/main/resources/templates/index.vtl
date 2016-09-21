@@ -1,0 +1,24 @@
+<h1>Godzilla!</h1>
+
+#if($godzillas.size() > 0)
+  <h3>Pick a Godzilla from a certain era:</h3>
+  <ul>
+    #foreach($godzilla in $godzillas)
+      <li><a href=/godzilla/$godzilla.getId()/medias>$godzilla.getEra() Godzilla<a></li>
+    #end
+  </ul>
+#else
+  <h3>No Godzillas in our Database!</h3>
+#end
+
+<form action="/godzilla" method="post">
+  <div class="form-group">
+    <label for="era">Add an Era:</label>
+    <input type="text" name="era" id="era" class="form-control" placeholder="Era">
+  </div>
+  <div class="form-group">
+    <label for="enemy">Add an Enemy:</label>
+    <input type="text" name="enemy" id="enemy" class="form-control" placeholder="Enemy">
+  </div>
+  <button type="submit" class="btn btn-danger">Create New Godzilla</button>
+</form>
