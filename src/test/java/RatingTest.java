@@ -1,6 +1,9 @@
 import org.sql2o.*;
 import org.junit.*;
 import static org.junit.Assert.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class RatingTest {
   private Rating firstRating;
@@ -48,7 +51,8 @@ public class RatingTest {
 
   @Test
   public void equals_returnsTrueIfRatingNumbersAreTheSame() {
-    assertTrue(firstRating.equals(secondRating));
+    Rating myRating = new Rating(5, 1, 1);
+    assertTrue(firstRating.equals(myRating));
   }
 
   @Test
@@ -68,11 +72,11 @@ public class RatingTest {
   public void save_savesGodzillaIdandMediaIdIntoDB_true() {
     Godzilla myGodzilla = new Godzilla("70's", "Mothra");
     myGodzilla.save();
-    Media myMedia = new Media("movie", "Godzilla", "Godzilla smashes things", 1)
+    Media myMedia = new Media("movie", "Godzilla", "Godzilla smashes things", 1);
     myMedia.save();
     Rating myRating = new Rating(5, myMedia.getId(), myGodzilla.getId());
     myRating.save();
-    Rating savedRating = Rating.find(firstRating.getId());
+    Rating savedRating = Rating.find(myRating.getId());
     assertEquals(savedRating.getGodzillaId(), myGodzilla.getId());
     assertEquals(savedRating.getMediaId(), myMedia.getId());
   }

@@ -49,11 +49,11 @@ public class Rating {
     }
   }
 
-  public static Rating find() {
+  public static Rating find(int id) {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM ratings WHERE id = :id";
       Rating rating = con.createQuery(sql)
-        .addParameter("id", this.id)
+        .addParameter("id", id)
         .executeAndFetchFirst(Rating.class);
       return rating;
     }
@@ -63,7 +63,7 @@ public class Rating {
     try(Connection con = DB.sql2o.open()) {
       String sql = "UPDATE ratings SET ratingNumber = :ratingNumber WHERE id = :id";
       con.createQuery(sql)
-        .addParameter("ratingNumber", this.ratingNumber)
+        .addParameter("ratingNumber", ratingNumber)
         .addParameter("id", this.id)
         .executeUpdate();
     }

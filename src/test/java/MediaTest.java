@@ -1,6 +1,9 @@
 import org.sql2o.*;
 import org.junit.*;
 import static org.junit.Assert.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MediaTest {
   private Media firstMedia;
@@ -48,7 +51,8 @@ public class MediaTest {
 
   @Test
   public void equals_returnsTrueIfDescriptionsAreTheSame() {
-    assertTrue(firstMedia.equals(secondMedia));
+    Media myMedia = new Media("movie", "Mothra vs. Godzilla", "Mothra battles Godzilla", 1);
+    assertTrue(firstMedia.equals(myMedia));
   }
 
   @Test
@@ -68,30 +72,30 @@ public class MediaTest {
   public void save_savesGodzillaIdIntoDB_true() {
     Godzilla myGodzilla = new Godzilla("60's", "Gigan");
     myGodzilla.save();
-    myGodzilla.getId());
-    firstMedia.save();
-    Media savedMedia = Media.find(firstMedia.getId());
+    Media myMedia = new Media("movie", "Mothra vs. Godzilla", "Mothra battles Godzilla", myGodzilla.getId());
+    myMedia.save();
+    Media savedMedia = Media.find(myMedia.getId());
     assertEquals(savedMedia.getGodzillaId(), myGodzilla.getId());
   }
 
   @Test
   public void updateDescription_updatesMediaDescription_true() {
     firstMedia.save();
-    firstMedia.update("Godzilla destroys the city");
+    firstMedia.updateDescription("Godzilla destroys the city");
     assertEquals("Godzilla destroys the city", Media.find(firstMedia.getId()).getDescription());
   }
 
   @Test
   public void updateTitle_updatesMediaTitle_true() {
     firstMedia.save();
-    firstMedia.update("Son of Godzilla");
+    firstMedia.updateTitle("Son of Godzilla");
     assertEquals("Son of Godzilla", Media.find(firstMedia.getId()).getTitle());
   }
 
   @Test
   public void updateComment_updatesMediaComment_true() {
     firstMedia.save();
-    firstMedia.update("very bad");
+    firstMedia.updateComment("very bad");
     assertEquals("very bad", Media.find(firstMedia.getId()).getComment());
   }
 

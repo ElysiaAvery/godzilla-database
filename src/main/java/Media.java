@@ -26,7 +26,7 @@ public class Media {
     return title;
   }
 
-  public String getDesciption() {
+  public String getDescription() {
     return description;
   }
 
@@ -49,7 +49,7 @@ public class Media {
     } else {
       Media newMedia = (Media) otherMedia;
       return this.getType().equals(newMedia.getType()) &&
-             this.getDesciption().equals(newMedia.getDescription()) && this.getTitle().equal(newMedia.getTitle()) &&
+             this.getDescription().equals(newMedia.getDescription()) && this.getTitle().equals(newMedia.getTitle()) &&
              this.getId() == newMedia.getId() &&
              this.getGodzillaId() == newMedia.getGodzillaId();
     }
@@ -75,7 +75,7 @@ public class Media {
     }
 
     public static Media find(int id) {
-      try(Connection con = DB.sql2o.opne()) {
+      try(Connection con = DB.sql2o.open()) {
         String sql = "SELECT * FROM medias where id=:id";
         Media media = con.createQuery(sql)
         .addParameter("id", id)
