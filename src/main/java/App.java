@@ -30,7 +30,7 @@ public class App {
 
     get("/godzilla/:id/medias", (request, response) -> {
       Map<String, Object> model = new HashMap<>();
-      Godzilla godzilla = Integer.parseInt(request.params("id"));
+      Godzilla godzilla = Godzilla.find(Integer.parseInt(request.params(":id")));
       model.put("medias", Media.all());
       model.put("godzilla", godzilla);
       model.put("template", "templates/godzilla.vtl");
@@ -47,6 +47,7 @@ public class App {
       media.save();
       model.put("medias", Godzilla.find(godzillaId).getMedias());
       model.put("template", "templates/medias.vtl");
+      return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
   }
 }
