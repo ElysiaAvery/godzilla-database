@@ -1,7 +1,9 @@
 import java.util.Map;
 import java.util.HashMap;
 import spark.ModelAndView;
+import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import spark.template.velocity.VelocityTemplateEngine;
 import static spark.Spark.*;
 
@@ -31,7 +33,8 @@ public class App {
     get("/godzilla/:id/medias", (request, response) -> {
       Map<String, Object> model = new HashMap<>();
       Godzilla godzilla = Godzilla.find(Integer.parseInt(request.params(":id")));
-      model.put("medias", Media.all());
+      godzilla.calculateAverage();
+      model.put("medias", godzilla.getMedias());
       model.put("godzilla", godzilla);
       model.put("template", "templates/godzilla.vtl");
       return new ModelAndView(model, layout);
@@ -53,6 +56,7 @@ public class App {
     get("/medias/:id", (request, response) -> {
       Map<String, Object> model = new HashMap<>();
       Media media = Media.find(Integer.parseInt(request.params(":id")));
+      media.calculateAverage();
       model.put("media", media);
       model.put("template", "templates/medias.vtl");
       return new ModelAndView(model, layout);
@@ -81,6 +85,22 @@ public class App {
       String trait = request.queryParams("edit-traits");
       Godzilla godzilla = Godzilla.find(Integer.parseInt(request.params(":id")));
       godzilla.updateTraits(trait);
+      model.put("godzilla", godzilla);
+      model.put("template", "templates/godzilla.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/godzilla/:id/rating/new", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      Godzilla godzilla = Godzilla.find(Integer.parseInt(request.params(":id")));
+      int userRating = Integer.parseInt(request.queryParams("rating"));
+      for (int i = 0; i < Rating.getRatingsArray().length; i++) {
+        if(userRating == Rating.getRatingsArray()[i]) {
+          Rating rating = new Rating(Rating.getRatingsArray()[i], 0, godzilla.getId());
+          rating.save();
+        }
+      }
+      godzilla.calculateAverage();
       model.put("godzilla", godzilla);
       model.put("template", "templates/godzilla.vtl");
       return new ModelAndView(model, layout);
@@ -122,6 +142,22 @@ public class App {
       model.put("media", media);
       comment.updateComment(newComment);
       model.put("comment", comment);
+      model.put("template", "templates/medias.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/media/:id/rating", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      Media media = Media.find(Integer.parseInt(request.params(":id")));
+      int userRating = Integer.parseInt(request.queryParams("rating"));
+      for (int i = 0; i < Rating.getRatingsArray().length; i++) {
+        if(userRating == Rating.getRatingsArray()[i]) {
+          Rating rating = new Rating(Rating.getRatingsArray()[i], media.getId(), 0);
+          rating.save();
+        }
+      }
+      media.calculateAverage();
+      model.put("media", media);
       model.put("template", "templates/medias.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());

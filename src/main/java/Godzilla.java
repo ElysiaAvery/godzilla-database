@@ -1,11 +1,13 @@
 import java.util.List;
 import java.util.ArrayList;
 import org.sql2o.*;
+import java.lang.Math;
 
 public class Godzilla {
   private int id;
   private String era;
   private String traits;
+  private double averageRating;
 
   public Godzilla(String era, String traits) {
     this.era = era;
@@ -22,6 +24,10 @@ public class Godzilla {
 
   public String getTraits() {
     return traits;
+  }
+
+  public double getAverageRating() {
+    return averageRating;
   }
 
   public static List<Godzilla> all() {
@@ -108,6 +114,18 @@ public class Godzilla {
       return con.createQuery(sql)
         .addParameter("id", this.id)
         .executeAndFetch(Comment.class);
+    }
+  }
+
+  public void calculateAverage() {
+    int total = 0;
+    if(this.getRatings().size() > 0) {
+      for (Rating rating : this.getRatings()) {
+        total += rating.getRatingNumber();
+      }
+      this.averageRating = total/this.getRatings().size();
+    } else {
+      this.averageRating = 0;
     }
   }
 }

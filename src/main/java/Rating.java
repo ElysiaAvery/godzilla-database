@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import org.sql2o.*;
 
 public class Rating {
@@ -7,6 +8,7 @@ public class Rating {
   private int id;
   private int mediaId;
   private int godzillaId;
+  private static int[] ratingsArray = new int[] {1,2,3,4,5};
 
   public Rating(int ratingNumber, int mediaId, int godzillaId) {
     this.ratingNumber = ratingNumber;
@@ -28,6 +30,10 @@ public class Rating {
 
   public int getGodzillaId() {
     return godzillaId;
+  }
+
+  public static int[] getRatingsArray() {
+    return ratingsArray;
   }
 
   public void save() {

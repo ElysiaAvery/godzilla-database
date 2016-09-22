@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.ArrayList;
 import org.sql2o.*;
+import java.lang.Math;
 
 public class Media {
   private String type;
@@ -8,6 +9,7 @@ public class Media {
   private String description;
   private int id;
   private int godzillaId;
+  private double averageRating;
 
   public Media(String type, String title, String description, int godzillaId) {
     this.type = type;
@@ -34,6 +36,10 @@ public class Media {
 
   public int getGodzillaId() {
     return godzillaId;
+  }
+
+  public double getAverageRating() {
+    return averageRating;
   }
 
   @Override
@@ -127,5 +133,15 @@ public class Media {
       }
     }
 
-
+    public void calculateAverage() {
+      int total = 0;
+      if(this.getRatings().size() > 0) {
+        for (Rating rating : this.getRatings()) {
+          total += rating.getRatingNumber();
+        }
+        this.averageRating = total/this.getRatings().size();
+      } else {
+        this.averageRating = 0;
+      }
+    }
 }

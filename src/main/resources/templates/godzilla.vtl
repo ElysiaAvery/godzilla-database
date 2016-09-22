@@ -1,11 +1,15 @@
-<h1>$godzilla.getEra() Godzilla</h1>
+<h1><span class="underline">$godzilla.getEra() Godzilla</span></h1>
 
 #if($godzilla.getTraits().length() > 0)
-  <h2>Traits:</h2>
+  <h2><span class="underline">Traits:</span></h2>
   <p>$godzilla.getTraits()</p>
   <p><a href="/godzilla/$godzilla.getId()/traits/edit">edit</a></p>
 #else
   <p>There are no traits. Add some <a href="/godzilla/$godzilla.getId()/traits/edit">here</a></p>
+#end
+
+#if($godzilla.getRatings().size() > 0)
+  <h3><span class="underline">Ratings:</span> $godzilla.getAverageRating()/5</h3>
 #end
 
 #if($godzilla.getMedias().size() > 0)
@@ -18,6 +22,15 @@
 #else
   <h3>There is no media added yet!</h3>
 #end
+
+<h4>Rate:</h4>
+<div class="form-group">
+  <form action="/godzilla/$godzilla.getId()/rating/new" method="post">
+    <div class="rating">
+      <button type="submit" name="rating" value="1"><i class="glyphicon glyphicon-star-empty"></i></button><button type="submit" name="rating" value="2"><i class="glyphicon glyphicon-star-empty"></i></button><button type="submit" name="rating" value="3"><i class="glyphicon glyphicon-star-empty"></i></button><button type="submit" name="rating" value="4"><i class="glyphicon glyphicon-star-empty"></i></button><button type="submit" name="rating" value="5"><i class="glyphicon glyphicon-star-empty"></i></button>
+    </div>
+  </form>
+</div>
 
 <h4>Would you like to add some information about $godzilla.getEra() Godzilla?</h4>
 
@@ -36,3 +49,5 @@
   </div>
   <button type="submit" class="btn btn-danger">Add</button>
 </form>
+
+<p><a href="/">Go Back to Home Page</a></p>

@@ -30,14 +30,48 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: comments; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+--
+
+CREATE TABLE comments (
+    id integer NOT NULL,
+    comment character varying,
+    godzillaid integer,
+    mediaid integer
+);
+
+
+ALTER TABLE comments OWNER TO "Guest";
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
+--
+
+CREATE SEQUENCE comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE comments_id_seq OWNER TO "Guest";
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
+--
+
+ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
+
+
+--
 -- Name: godzillas; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
 --
 
 CREATE TABLE godzillas (
     id integer NOT NULL,
     era character varying,
-    enemies character varying,
-    comment character varying
+    traits character varying
 );
 
 
@@ -72,7 +106,6 @@ CREATE TABLE medias (
     id integer NOT NULL,
     type character varying,
     description character varying,
-    comment character varying,
     godzillaid integer,
     title character varying
 );
@@ -140,6 +173,13 @@ ALTER SEQUENCE ratings_id_seq OWNED BY ratings.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
 --
 
+ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
+--
+
 ALTER TABLE ONLY godzillas ALTER COLUMN id SET DEFAULT nextval('godzillas_id_seq'::regclass);
 
 
@@ -158,10 +198,25 @@ ALTER TABLE ONLY ratings ALTER COLUMN id SET DEFAULT nextval('ratings_id_seq'::r
 
 
 --
+-- Data for Name: comments; Type: TABLE DATA; Schema: public; Owner: Guest
+--
+
+COPY comments (id, comment, godzillaid, mediaid) FROM stdin;
+\.
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
+--
+
+SELECT pg_catalog.setval('comments_id_seq', 3, true);
+
+
+--
 -- Data for Name: godzillas; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-COPY godzillas (id, era, enemies, comment) FROM stdin;
+COPY godzillas (id, era, traits) FROM stdin;
 \.
 
 
@@ -169,14 +224,14 @@ COPY godzillas (id, era, enemies, comment) FROM stdin;
 -- Name: godzillas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('godzillas_id_seq', 3, true);
+SELECT pg_catalog.setval('godzillas_id_seq', 6, true);
 
 
 --
 -- Data for Name: medias; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-COPY medias (id, type, description, comment, godzillaid, title) FROM stdin;
+COPY medias (id, type, description, godzillaid, title) FROM stdin;
 \.
 
 
@@ -184,7 +239,7 @@ COPY medias (id, type, description, comment, godzillaid, title) FROM stdin;
 -- Name: medias_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('medias_id_seq', 1, false);
+SELECT pg_catalog.setval('medias_id_seq', 4, true);
 
 
 --
@@ -199,7 +254,15 @@ COPY ratings (id, ratingnumber, mediaid, godzillaid) FROM stdin;
 -- Name: ratings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('ratings_id_seq', 1, false);
+SELECT pg_catalog.setval('ratings_id_seq', 199, true);
+
+
+--
+-- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
+--
+
+ALTER TABLE ONLY comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
 
 
 --
