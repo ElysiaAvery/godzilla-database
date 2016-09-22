@@ -110,7 +110,7 @@ public class App {
       Media media = Media.find(comment.getMediaId());
       model.put("media", media);
       model.put("comment", comment);
-      model.put("template", "templates/edit-comment.vtl");
+      model.put("template", "templates/edit-comments.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 

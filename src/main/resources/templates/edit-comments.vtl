@@ -2,7 +2,7 @@
 <div class="form-group">
   <form action="/media/$media.getId()/comment/$comment.getId()/edit/new" method="post">
     <label for="edit-comment">Edit Here:</label>
-    <textarea class="form-control" type="text" name="edit-comment" id="edit-comment">$media.getComment()</textarea>
+    <textarea class="form-control" type="text" name="edit-comment" id="edit-comment">$comment.getComment()</textarea>
     <button type="submit" class="btn btn-danger">Submit Edits</button>
   </form>
 </div>
