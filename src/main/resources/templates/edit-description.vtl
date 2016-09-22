@@ -1,0 +1,8 @@
+<h1>Welcome to the ADMIN EDIT page</h1>
+<div class="form-group">
+  <form action="/media/$media.getId()/description/edit/new" method="post">
+    <label for="edit-description">Edit Here:</label>
+    <textarea class="form-control" type="text" name="edit-description" id="edit-description">$media.getDescription()</textarea>
+    <button type="submit" class="btn btn-danger">Submit Edits</button>
+  </form>
+</div>

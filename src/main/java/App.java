@@ -37,7 +37,7 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    post("/godzilla/:id/medias", (request, response) -> {
+    post("/godzilla/:id/medias/new", (request, response) -> {
       Map<String, Object> model = new HashMap<>();
       String type = request.queryParams("type");
       String title = request.queryParams("title");
@@ -45,7 +45,83 @@ public class App {
       int godzillaId = Integer.parseInt(request.params(":id"));
       Media media = new Media(type, title, description, godzillaId);
       media.save();
-      model.put("medias", Godzilla.find(godzillaId).getMedias());
+      model.put("godzilla", Godzilla.find(godzillaId));
+      model.put("template", "templates/godzilla.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/medias/:id", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      Media media = Media.find(Integer.parseInt(request.params(":id")));
+      model.put("media", media);
+      model.put("template", "templates/medias.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/media/:id/comment", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      Media media = Media.find(Integer.parseInt(request.params(":id")));
+      Comment comment = new Comment(request.queryParams("media-comment"), media.getId(), 0);
+      comment.save();
+      model.put("media", media);
+      model.put("template", "templates/medias.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/godzilla/:id/traits/edit", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      Godzilla godzilla = Godzilla.find(Integer.parseInt(request.params(":id")));
+      model.put("godzilla", godzilla);
+      model.put("template", "templates/edit-traits.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/godzilla/:id/traits/edit/new", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      String trait = request.queryParams("edit-traits");
+      Godzilla godzilla = Godzilla.find(Integer.parseInt(request.params(":id")));
+      godzilla.updateTraits(trait);
+      model.put("godzilla", godzilla);
+      model.put("template", "templates/godzilla.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/media/:id/description/edit", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      Media media = Media.find(Integer.parseInt(request.params(":id")));
+      model.put("media", media);
+      model.put("template", "templates/edit-description.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/media/:id/description/edit/new", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      String description = request.queryParams("edit-description");
+      Media media = Media.find(Integer.parseInt(request.params(":id")));
+      media.updateDescription(description);
+      model.put("media", media);
+      model.put("template", "templates/medias.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/media/:mediaId/comment/:id/edit", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      Comment comment = Comment.find(Integer.parseInt(request.params(":id")));
+      Media media = Media.find(comment.getMediaId());
+      model.put("media", media);
+      model.put("comment", comment);
+      model.put("template", "templates/edit-comment.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/media/:mediaId/comment/:id/edit/new", (request, response) -> {
+      Map<String, Object> model = new HashMap<>();
+      String newComment = request.queryParams("edit-comment");
+      Comment comment = Comment.find(Integer.parseInt(request.params(":id")));
+      Media media = Media.find(comment.getMediaId());
+      model.put("media", media);
+      comment.updateComment(newComment);
+      model.put("comment", comment);
       model.put("template", "templates/medias.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());

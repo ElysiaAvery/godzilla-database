@@ -11,8 +11,8 @@ public class GodzillaTest {
 
   @Before
   public void initialize() {
-    firstGodzilla = new Godzilla("60's", "Hedorah");
-    secondGodzilla = new Godzilla("60's", "Hedorah");
+    firstGodzilla = new Godzilla("60's", "Chaotic neutrel");
+    secondGodzilla = new Godzilla("60's", "Chaotic neutrel");
   }
 
   @Rule
@@ -75,10 +75,10 @@ public class GodzillaTest {
   }
 
   @Test
-  public void updateEnemies_updatesGodzillaEnemies_true() {
+  public void updateTraits_updatesGodzillaTraits_true() {
     firstGodzilla.save();
-    firstGodzilla.updateEnemies("Mothra");
-    assertEquals("Mothra", Godzilla.find(firstGodzilla.getId()).getEnemies());
+    firstGodzilla.updateTraits("Mean spirited");
+    assertEquals("Mean spirited", Godzilla.find(firstGodzilla.getId()).getTraits());
   }
 
   @Test

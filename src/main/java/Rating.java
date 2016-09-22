@@ -59,7 +59,8 @@ public class Rating {
     }
   }
 
-  public void update(int ratingNumber) {
+  public void updateRating(int ratingNumber) {
+    this.ratingNumber = ratingNumber;
     try(Connection con = DB.sql2o.open()) {
       String sql = "UPDATE ratings SET ratingNumber = :ratingNumber WHERE id = :id";
       con.createQuery(sql)

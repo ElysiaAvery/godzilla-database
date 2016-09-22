@@ -82,9 +82,9 @@ public class RatingTest {
   }
 
   @Test
-  public void update_updatesRatingNumber_true() {
+  public void updateRating_updatesRatingNumber_true() {
     firstRating.save();
-    firstRating.update(4);
+    firstRating.updateRating(4);
     assertEquals(4, Rating.find(firstRating.getId()).getRatingNumber());
   }
 

@@ -1,17 +1,27 @@
 <h1>$godzilla.getEra() Godzilla</h1>
 
-#if($godzilla.getMedias())
+#if($godzilla.getTraits().length() > 0)
+  <h2>Traits:</h2>
+  <p>$godzilla.getTraits()</p>
+  <p><a href="/godzilla/$godzilla.getId()/traits/edit">edit</a></p>
+#else
+  <p>There are no traits. Add some <a href="/godzilla/$godzilla.getId()/traits/edit">here</a></p>
+#end
+
+#if($godzilla.getMedias().size() > 0)
   <h3>Here Is the Media From This Godzilla:</h3>
   <ul>
     #foreach($media in $godzilla.getMedias())
-      <li><a href="/medias">$media.getTitle()</a></li>
+      <li><a href="/medias/$media.getId()">$media.getTitle()</a></li>
     #end
   </ul>
+#else
+  <h3>There is no media added yet!</h3>
 #end
 
 <h4>Would you like to add some information about $godzilla.getEra() Godzilla?</h4>
 
-<form action="/godzilla/:id/medias" method="post">
+<form action="/godzilla/$godzilla.getId()/medias/new" method="post">
   <div class="form-group">
     <label for="type">Enter the type of Media you would like to write about:</label>
     <input type="text" name="type" id="type" class="form-control" placeholder="Media Type">
@@ -24,4 +34,5 @@
     <label for="description">Enter a Description:</label>
     <input type="text" name="description" id="description" class="form-control" placeholder="Media Description">
   </div>
+  <button type="submit" class="btn btn-danger">Add</button>
 </form>

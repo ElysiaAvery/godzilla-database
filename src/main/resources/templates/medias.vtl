@@ -1,0 +1,33 @@
+<h1><span class ="underline">$media.getTitle()</span></h1>
+
+<h3><span class ="underline">Media Type:</span> $media.getType()</h2>
+<h3><span class ="underline">Rating:</span></h3>
+<h3><span class ="underline">Description:</span> </h3>
+<p>$media.getDescription() <a href="/media/$media.getId()/description/edit">edit</a></p>
+
+
+#if($media.getComments().size() > 0)
+  <h4><span class ="underline">Comment:</span></h4>
+  #foreach($comment in $media.getComments())
+    <p>$comment.getComment() <a href="/media/$media.getId()/comment/$comment.getId()/edit">edit</a></p>
+  #end
+#end
+
+<h4>Add a Comment: <h4>
+<div class="form-group">
+  <form action="/media/$media.getId()/comment" method="post">
+    <label for="media-comment">please keep it friendly.</label>
+    <input class="form-control" type="text" name="media-comment" id="media-comment" placeholder="Type here">
+    <button type="submit" class="btn btn-danger">Submit</button>
+  </form>
+
+  <h4>Rate:</h4>
+  <form action="/media/$media.getId()/rating" method="post">
+    <div class="rating">
+      <button type="submit" name="rating" value="1">$</button><button type="submit" name="rating" value="2">$</button><button type="submit" name="rating" value="3">$</button><button type="submit" name="rating" value="4">$</button><button type="submit" name="rating" value="5">$</button>
+    </div>
+  </form>
+</div>
+<h4><a href="/">Back To Home Page</a></h4>
+<br>
+<h4><a href="/godzilla/$media.getGodzillaId()/medias">View Other Media</a></h4>

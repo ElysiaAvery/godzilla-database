@@ -6,7 +6,6 @@ public class Media {
   private String type;
   private String title;
   private String description;
-  private String comment;
   private int id;
   private int godzillaId;
 
@@ -15,7 +14,6 @@ public class Media {
     this.title = title;
     this.description = description;
     this.godzillaId = godzillaId;
-    this.comment = "";
   }
 
   public String getType() {
@@ -28,10 +26,6 @@ public class Media {
 
   public String getDescription() {
     return description;
-  }
-
-  public String getComment() {
-    return comment;
   }
 
   public int getId() {
@@ -85,6 +79,7 @@ public class Media {
     }
 
     public void updateDescription(String description) {
+      this.description = description;
       try(Connection con = DB.sql2o.open()) {
         String sql = "UPDATE medias SET description = :description WHERE id = :id";
         con.createQuery(sql)
@@ -94,17 +89,8 @@ public class Media {
       }
     }
 
-    public void updateComment(String comment) {
-      try(Connection con = DB.sql2o.open()) {
-        String sql = "UPDATE medias SET comment = :comment WHERE id = :id";
-        con.createQuery(sql)
-          .addParameter("comment", comment)
-          .addParameter("id", id)
-          .executeUpdate();
-      }
-    }
-
     public void updateTitle(String title) {
+      this.title = title;
       try(Connection con = DB.sql2o.open()) {
         String sql = "UPDATE medias SET title = :title WHERE id = :id";
         con.createQuery(sql)
@@ -131,5 +117,15 @@ public class Media {
         .executeAndFetch(Rating.class);
       }
     }
+
+    public List<Comment> getComments() {
+      try(Connection con = DB.sql2o.open()) {
+        String sql = "SELECT * FROM comments where mediaId = :id";
+        return con.createQuery(sql)
+        .addParameter("id", this.id)
+        .executeAndFetch(Comment.class);
+      }
+    }
+
 
 }

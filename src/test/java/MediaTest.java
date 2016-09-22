@@ -93,13 +93,6 @@ public class MediaTest {
   }
 
   @Test
-  public void updateComment_updatesMediaComment_true() {
-    firstMedia.save();
-    firstMedia.updateComment("very bad");
-    assertEquals("very bad", Media.find(firstMedia.getId()).getComment());
-  }
-
-  @Test
   public void getRatings_retrievesAllRatingsFromDatabase_RatingsList() {
     firstMedia.save();
     Godzilla myGodzilla = new Godzilla("60's", "Hedorah");

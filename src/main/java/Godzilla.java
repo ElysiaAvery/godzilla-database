@@ -5,14 +5,11 @@ import org.sql2o.*;
 public class Godzilla {
   private int id;
   private String era;
-  private String enemies;
-  private String comment;
+  private String traits;
 
-  public Godzilla(String era, String enemies) {
-    this.id = id;
+  public Godzilla(String era, String traits) {
     this.era = era;
-    this.enemies = enemies;
-    this.comment = comment;
+    this.traits = traits;
   }
 
   public int getId() {
@@ -23,27 +20,23 @@ public class Godzilla {
     return era;
   }
 
-  public String getEnemies() {
-    return enemies;
-  }
-
-  public String getComment() {
-    return comment;
+  public String getTraits() {
+    return traits;
   }
 
   public static List<Godzilla> all() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT id, era, enemies FROM godzillas";
+      String sql = "SELECT id, era, traits FROM godzillas";
       return con.createQuery(sql).executeAndFetch(Godzilla.class);
     }
   }
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO godzillas (era, enemies) VALUES (:era, :enemies)";
+      String sql = "INSERT INTO godzillas (era, traits) VALUES (:era, :traits)";
       this.id = (int) con.createQuery(sql, true)
         .addParameter("era", this.era)
-        .addParameter("enemies", this.enemies)
+        .addParameter("traits", this.traits)
         .executeUpdate()
         .getKey();
     }
@@ -56,7 +49,7 @@ public class Godzilla {
     } else {
       Godzilla newGodzilla = (Godzilla) otherGodzilla;
       return this.getEra().equals(newGodzilla.getEra()) &&
-             this.getEnemies().equals(newGodzilla.getEnemies()) &&
+             this.getTraits().equals(newGodzilla.getTraits()) &&
              this.getId() == newGodzilla.getId();
     }
   }
@@ -71,11 +64,12 @@ public class Godzilla {
     }
   }
 
-  public void updateEnemies(String enemies) {
+  public void updateTraits(String traits) {
+    this.traits = traits;
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE godzillas SET enemies = :enemies WHERE id = :id";
+      String sql = "UPDATE godzillas SET traits = :traits WHERE id = :id";
       con.createQuery(sql)
-        .addParameter("enemies", enemies)
+        .addParameter("traits", traits)
         .addParameter("id", id)
         .executeUpdate();
     }
@@ -105,6 +99,15 @@ public class Godzilla {
       return con.createQuery(sql)
         .addParameter("id", this.id)
         .executeAndFetch(Rating.class);
+    }
+  }
+
+  public List<Comment> getComments() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM comments WHERE godzillaId = :id";
+      return con.createQuery(sql)
+        .addParameter("id", this.id)
+        .executeAndFetch(Comment.class);
     }
   }
 }
